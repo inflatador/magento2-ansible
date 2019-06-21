@@ -2,6 +2,7 @@
 
 - name: apply common configuration to all nodes
   hosts: all
+  user: rack 
   become: yes
   vars_files:
     - defaults.yml

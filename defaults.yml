@@ -1,0 +1,4 @@
+---
+
+magento_os_user: "magento"
+magento_os_group: "php-fpm"
