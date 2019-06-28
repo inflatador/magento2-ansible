@@ -1,4 +1,15 @@
 ---
 
+
+# Begin Linux system user vars
+
 magento_os_user: "magento"
 magento_os_group: "php-fpm"
+
+# Begin database vars
+
+magento_db_user: "{{ magento_os_user }}"
+magento_db_pass: ""
+magento_db_name: "{{ magento_os_user }}_db"
+magento_db_host: "localhost"
+
