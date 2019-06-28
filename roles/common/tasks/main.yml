@@ -1,15 +1,13 @@
 ---
 
-- name: Set password variable
-  set_fact:
-    common_user_password: "{{ lookup('password', '/tmp/passwordfile chars=ascii_letters,digits,hexdigits,punctuation')  | password_hash('sha512')}}"
-  when: item.password is not defined or
-    item.password == ""
+- name: Ensure Magento group exists
+  group:
+    name: "{{ magento_os_group}}"
+    state: present
 
-- name: Create Linux user {{ item.name }} with password {{ item.password | default(common_user_password, true) }}
+- name: Ensure Magento user exists
   user:
-    name: "{{ item.name }}"
-    groups: "{{ item.groups | default(omit, true) }}"
-    home: "{{ item.home | default(omit, true) }}"
-    password: "{{ item.password | default(common_user_password, true) | password_hash('sha512') }}"
+    name: "{{ magento_os_user}}"
+    groups: "{{ magento_os_group | default(omit, true) }}"
+    password: "{{ lookup('password', '/tmp/passwordfile chars=ascii_letters,digits,hexdigits,punctuation')  | password_hash('sha512')}}"
     update_password: on_create
