@@ -8,6 +8,7 @@
 
   roles:
     - common
+    - mariadb
 
 #  tasks:
 #    - name: Display all variables/facts known for a host

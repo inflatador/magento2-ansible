@@ -1,0 +1,6 @@
+---
+
+- name: Ensure mariadb package is installed
+  package:
+    name: mariadb-server
+    state: present
