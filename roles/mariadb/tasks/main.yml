@@ -8,45 +8,62 @@
     - mariadb-server
     - python-mysqldb
 
-- name: Assign random password for database magento user
-  set_fact:
-    mage_db_password: "{{ lookup('password', '/tmp/magedbpasswordfile chars=ascii_letters,digits length=36')}}"
-    
-
 - name: Assign random password for database root user
   set_fact:
-    db_password: "{{ lookup('password', '/tmp/dbpasswordfizile chars=ascii_letters,digits length=36')}}"
-    
+    mysql_root_password: "{{ lookup('password', '/tmp/dbpasswordfizile chars=ascii_letters,digits length=36')}}"
 
-- name: Copy .my.cnf file into root's home directory
-  template: src="~/magento2-ansible/roles/mariadb/templates/my.cnf.j2" dest=/root/.my.cnf owner=root mode=0400
- 
-    
-- name: Create Magento database user
-  block:
-    - mysql_user:
-        login_user: root
-        login_password: "{{ db_password }} "
-        name: "{{ magento_os_user }}"
-        host: localhost
-        password: "{{ mage_db_password }}"
-        state: present
- 
-  rescue:
-    - name: Set database root user password
-      mysql_user:
-        name: root
-        host: localhost
-        password: "{{ db_password }}"
-        state: present
-        
-    - name: Copy .my.cnf file into root's home directory
-      template: src="~/magento2-ansible/roles/mariadb/templates/my.cnf.j2" dest=/root/.my.cnf owner=root mode=0400
- 
 
-- name: Remove anonymous users a la mysql_secure_installation
-  mysql_user:
-   name: ''
-   host_all: yes
-   state: absent
+- name: Change root user password on first run
+  mysql_user: login_user=root
+              login_password="{{ mysql_root_password }}"
+              check_implicit_admin=yes
+              name=root
+              password={{ mysql_root_password }}
+              priv=*.*:ALL,GRANT
+              host=localhost
 
+
+
+
+# - name: Assign random password for database magento user
+#   set_fact:
+#     mage_db_password: "{{ lookup('password', '/tmp/magedbpasswordfile chars=ascii_letters,digits length=36')}}"
+#
+#
+# - name: Assign random password for database root user
+#   set_fact:
+#     db_password: "{{ lookup('password', '/tmp/dbpasswordfizile chars=ascii_letters,digits length=36')}}"
+#
+#
+# - name: Copy .my.cnf file into root's home directory
+#   template: src="~/magento2-ansible/roles/mariadb/templates/my.cnf.j2" dest=/root/.my.cnf owner=root mode=0400
+#
+#
+# - name: Create Magento database user
+#   block:
+#     - mysql_user:
+#         login_user: root
+#         login_password: "{{ db_password }} "
+#         name: "{{ magento_os_user }}"
+#         host: localhost
+#         password: "{{ mage_db_password }}"
+#         state: present
+#
+#   rescue:
+#     - name: Set database root user password
+#       mysql_user:
+#         name: root
+#         host: localhost
+#         password: "{{ db_password }}"
+#         state: present
+#
+#     - name: Copy .my.cnf file into root's home directory
+#       template: src="~/magento2-ansible/roles/mariadb/templates/my.cnf.j2" dest=/root/.my.cnf owner=root mode=0400
+#
+#
+# - name: Remove anonymous users a la mysql_secure_installation
+#   mysql_user:
+#    name: ''
+#    host_all: yes
+#    state: absent
+#
