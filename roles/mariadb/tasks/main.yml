@@ -8,6 +8,12 @@
     - mariadb-server
     - python-mysqldb
 
+- name: Ensure MariaDB is enabled and starts on boot
+  systemd:
+    name: mariadb
+    state: started
+    enabled: yes
+    
 # Note: we don't change root's password because Ubuntu uses 
 # socket-based auth for the root MySQL password user.
 # in other words, the system root user can login to MySQL without a password
@@ -42,3 +48,7 @@
     priv: "magento_db.*:DROP,LOCK TABLES,SELECT,INSERT,INDEX,ALTER,CREATE TEMPORARY TABLES,UPDATE,CREATE,DELETE"
     host: localhost
     update_password: on_create
+
+- name: Tune system for MariaDB
+  include: system_tuning.yml
+  when: mysql_system_tuning
