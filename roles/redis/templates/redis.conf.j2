@@ -13,7 +13,7 @@ save {{ seconds_changes }}
 save ""
 {% endif %}
 {% if redis_unixsocket -%}
-unixsocket {{ redis_unixsocket }}
+unixsocket {{ redis_unixsocketpath }}
 unixsocketperm {{ redis_unixsocketperm }}
 {% endif %}
 
