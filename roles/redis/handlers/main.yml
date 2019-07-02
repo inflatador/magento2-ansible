@@ -1,0 +1,15 @@
+---
+
+- name: Start Redis
+  service:
+    name: redis
+    state: started
+
+- name: Restart Redis
+  service:
+    name: redis
+    state: restarted
+
+- name: Reload Systemd
+  systemd:
+    daemon_reload: yes
