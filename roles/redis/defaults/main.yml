@@ -6,8 +6,8 @@ redis_bind: 127.0.0.1
 redis_port: 6379
 redis_password: false
 
-#redis_unixsocket: "/var/run/redis/redis.sock"
-redis_unixsocket: false
+redis_unixsocket: "/var/run/redis/redis.sock"
+redis_unixsocket: true
 redis_unixsocketperm: 600
 
 # Also limited by somaxconn and tcp_max_syn_backlog
