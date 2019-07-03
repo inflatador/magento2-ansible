@@ -12,3 +12,4 @@ Contributors:
 - Joseph Chapman
 - Luke Hanley
 - Brian King
+- Manuel Meurer
