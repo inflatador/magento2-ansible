@@ -8,7 +8,7 @@ redis_password: false
 
 redis_unixsocketpath: "/var/run/redis/redis.sock"
 redis_unixsocket: true
-redis_unixsocketperm: 600
+redis_unixsocketperm: 666
 
 # Also limited by somaxconn and tcp_max_syn_backlog
 redis_tcp_backlog: 511
@@ -33,6 +33,6 @@ redis_save:
   - 300 10
   - 60 10000
 
-redis_maxmemory: false
-redis_maxmemory_policy: "noeviction"
+redis_maxmemory: "1G"
+redis_maxmemory_policy: "allkeys-lru"
 redis_maxmemory_samples: 5

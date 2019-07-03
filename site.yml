@@ -10,6 +10,7 @@
     - common
     - mariadb
     - redis
+    - php-fpm
 
 #  tasks:
 #    - name: Display all variables/facts known for a host

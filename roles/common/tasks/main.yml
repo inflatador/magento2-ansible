@@ -11,3 +11,39 @@
     groups: "{{ magento_os_group | default(omit, true) }}"
     password: "{{ lookup('password', '/tmp/passwordfile chars=ascii_letters,digits,hexdigits,punctuation')  | password_hash('sha512')}}"
     update_password: on_create
+
+- name: set swap_file variable
+  set_fact:
+    swap_file: /root/.SWAPFILE_DO_NOT_DELETE
+    
+- name: check if swap file exists
+  stat:
+    path: "{{ swap_file }}"
+  register: swap_file_check
+
+- name: create 1GB swap file
+  sudo: yes
+  command: fallocate -l 1G {{ swap_file }}
+  when: not swap_file_check.stat.exists
+
+- name: set permissions on swap file
+  sudo: yes
+  file:
+    path: "{{ swap_file }}"
+    mode: 0600
+
+- name: format swap file
+  sudo: yes
+  command: mkswap {{ swap_file }}
+  when: not swap_file_check.stat.exists
+
+- name: add to fstab
+  sudo: yes
+  lineinfile:
+    dest: /etc/fstab
+    regexp: "{{ swap_file }}"
+    line: "{{ swap_file }} none swap sw 0 0"
+
+- name: turn on swap
+  sudo: yes
+  command: swapon -a
