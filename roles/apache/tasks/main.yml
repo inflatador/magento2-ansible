@@ -28,6 +28,7 @@
   register: configs_created
   loop:
     - gzip
+    - "php{{php_vers}}-fpm"
   notify: 
    - activate apache configuration
    - reload apache
@@ -59,5 +60,12 @@
   loop:
     - ssl
   notify: 
-   - activate apache module
-   - reload apache
+    - activate apache module
+    - restart apache
+
+- name: Ensure proxy_fcgi is active for PHP-FPM
+  apache2_module:
+    name: proxy_fcgi
+    state: present
+  
+  

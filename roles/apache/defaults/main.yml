@@ -54,3 +54,5 @@ apache_vhosts:
 
 https_ports:
   - 443
+
+php_vers: 7.2
