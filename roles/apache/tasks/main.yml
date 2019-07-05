@@ -16,7 +16,14 @@
 # FIXME: every time we add configs to the templates dir, we will have to add it to 
 # the "loop" list here. Is there a way to loop based on everything in the templates dir?
 
-
+- name: build directory structure for vhost
+  file:
+    state: directory
+    path: "/var/www/vhosts/{{domain}}"
+    owner: root
+    group: root
+    mode: 0755
+  
 - name: Ensure apache configs are active
   template:
     src: "{{ item }}.conf.j2"
@@ -33,21 +40,6 @@
    - activate apache configuration
    - reload apache
 
-- name: Ensure apache sites are active
-  template:
-    src: "{{ item }}.conf.j2"
-    dest: "/etc/apache2/sites-available/{{ item }}.conf"
-    mode:  0644
-    owner: root
-    group: root
-    backup: true
-  register: sites_created
-  loop:
-    - vhost
-  notify: 
-   - activate apache site
-   - reload apache
-  
 - name: Ensure apache modules are active
   template:
     src: "{{ item }}.conf.j2"
@@ -68,4 +60,22 @@
     name: proxy_fcgi
     state: present
   
+- name: Ensure apache sites are active
+  template:
+    src: "{{ item }}.conf.j2"
+    dest: "/etc/apache2/sites-available/{{ item }}.conf"
+    mode:  0644
+    owner: root
+    group: root
+    backup: true
+  register: sites_created
+  loop:
+    - vhost
+  notify: 
+   - activate apache site
+   - reload apache
+
+- name: Debug the variable
+  debug:
+    var: sites_created
   
