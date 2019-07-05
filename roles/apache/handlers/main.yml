@@ -10,8 +10,20 @@
     name: apache2
     state: restarted
 
+- name: reload apache
+  command: systemctl reload apache2
 
 - name: activate apache configuration
-  command:
-    a2enconf *; systemctl reload apache2
-    
+  command: a2enconf {{ item }}
+  when: item.changed
+  with_items: conf_created.results
+
+- name: activate apache site
+  command: a2ensite {{ item }}
+  when: item.changed
+  with_items: sites_created.results
+
+- name: activate apache module
+  command: a2enmod {{ item }}
+  when: item.changed
+  with_items: mods_created.results

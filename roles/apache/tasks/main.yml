@@ -25,8 +25,39 @@
     owner: root
     group: root
     backup: true
+  register: configs_created
   loop:
     - gzip
-    - ssl
+  notify: 
+   - activate apache configuration
+   - reload apache
+
+- name: Ensure apache sites are active
+  template:
+    src: "{{ item }}.conf.j2"
+    dest: "/etc/apache2/sites-available/{{ item }}.conf"
+    mode:  0644
+    owner: root
+    group: root
+    backup: true
+  register: sites_created
+  loop:
     - vhost
-  notify: activate apache configuration
+  notify: 
+   - activate apache site
+   - reload apache
+  
+- name: Ensure apache modules are active
+  template:
+    src: "{{ item }}.conf.j2"
+    dest: "/etc/apache2/mods-available/{{ item }}.conf"
+    mode:  0644
+    owner: root
+    group: root
+    backup: true
+  register: mods_created
+  loop:
+    - ssl
+  notify: 
+   - activate apache module
+   - reload apache
