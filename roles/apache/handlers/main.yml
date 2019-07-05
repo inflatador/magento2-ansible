@@ -1,0 +1,17 @@
+---
+
+- name: start apache
+  service:
+    name: apache2
+    state: started
+    
+- name: restart apache
+  service:
+    name: apache2
+    state: restarted
+
+
+- name: activate apache configuration
+  command:
+    a2enconf *; systemctl reload apache2
+    
