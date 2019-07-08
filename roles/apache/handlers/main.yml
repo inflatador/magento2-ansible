@@ -14,9 +14,14 @@
   command: systemctl reload apache2
 
 - name: activate apache configuration
-  command: a2enconf {{ item }}
+  file: 
+    src: "{{ item.dest }}"
+    dest: "/etc/apache2/conf-enabled/{{ item.item }}.conf"
+    owner: root
+    group: root
+    state: link
+  with_items: " {{ conf_created.results }} "
   when: item.changed
-  with_items: conf_created.results
 
 - name: activate apache site
   file: 
@@ -26,12 +31,14 @@
     group: root
     state: link
   with_items: " {{ sites_created.results }} "
- 
-- name: Debug the variable
-  debug:
-   var: sites_created
-
+  
 - name: activate apache module
-  command: a2enmod {{ item }}
+  file: 
+    src: "{{ item.dest }}"
+    dest: "/etc/apache2/mods-enabled/{{ item.item }}.conf"
+    owner: root
+    group: root
+    state: link
+  loop: " {{ mods_created.results|flatten(levels=1) }} "
   when: item.changed
-  with_items: mods_created.results
+ 
