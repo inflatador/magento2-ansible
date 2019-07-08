@@ -24,41 +24,41 @@
     group: root
     mode: 0755
   
-- name: Ensure apache configs are active
-  template:
-    src: "{{ item }}.conf.j2"
-    dest: "/etc/apache2/conf-available/{{ item }}.conf"
-    mode:  0644
-    owner: root
-    group: root
-    backup: true
-  register: configs_created
-  loop:
-    - gzip
-    - "php{{php_vers}}-fpm"
-  notify: 
-   - activate apache configuration
-   - reload apache
-
-- name: Ensure apache modules are active
-  template:
-    src: "{{ item }}.conf.j2"
-    dest: "/etc/apache2/mods-available/{{ item }}.conf"
-    mode:  0644
-    owner: root
-    group: root
-    backup: true
-  register: mods_created
-  loop:
-    - ssl
-  notify: 
-    - activate apache module
-    - restart apache
-
-- name: Ensure proxy_fcgi is active for PHP-FPM
-  apache2_module:
-    name: proxy_fcgi
-    state: present
+#- name: Ensure apache configs are active
+#  template:
+#    src: "{{ item }}.conf.j2"
+#    dest: "/etc/apache2/conf-available/{{ item }}.conf"
+#    mode:  0644
+#    owner: root
+#    group: root
+#    backup: true
+#  register: configs_created
+#  loop:
+#    - gzip
+#    - "php{{php_vers}}-fpm"
+#  notify: 
+#   - activate apache configuration
+#   - reload apache
+#
+#- name: Ensure apache modules are active
+#  template:
+#    src: "{{ item }}.conf.j2"
+#    dest: "/etc/apache2/mods-available/{{ item }}.conf"
+#    mode:  0644
+#    owner: root
+#    group: root
+#    backup: true
+#  register: mods_created
+#  loop:
+#    - ssl
+#  notify: 
+#    - activate apache module
+#    - restart apache
+#
+#- name: Ensure proxy_fcgi is active for PHP-FPM
+#  apache2_module:
+#    name: proxy_fcgi
+#    state: present
   
 - name: Ensure apache sites are active
   template:
@@ -73,9 +73,9 @@
     - vhost
   notify: 
    - activate apache site
-   - reload apache
+#   - Debug the variable
 
-- name: Debug the variable
-  debug:
-    var: sites_created
+#- name: Debug the variable
+#  debug:
+#    var: sites_created
   

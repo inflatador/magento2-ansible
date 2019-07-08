@@ -19,9 +19,17 @@
   with_items: conf_created.results
 
 - name: activate apache site
-  command: a2ensite {{ item }}
-  when: item.changed
-  with_items: sites_created.results
+  file: 
+    src: "{{ item.dest }}"
+    dest: "/etc/apache2/sites-enabled/{{ item.item }}.conf"
+    owner: root
+    group: root
+    state: link
+  with_items: " {{ sites_created.results }} "
+ 
+- name: Debug the variable
+  debug:
+   var: sites_created
 
 - name: activate apache module
   command: a2enmod {{ item }}
