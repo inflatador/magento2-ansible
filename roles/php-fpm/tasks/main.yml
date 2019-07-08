@@ -2,8 +2,11 @@
 
 - name: Ensure PHP-FPM is installed
   package:
-    name: php-fpm
+    name: "{{ item }}"
     state: present
+  loop:
+    - "php{{php_vers}}-fpm"
+    - "php{{php_vers}}-dev"
 
 #- name: debug the variable
 #  debug:

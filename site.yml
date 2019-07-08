@@ -12,6 +12,7 @@
     - redis
     - php-fpm
     - apache
+    - magento
 
 #  tasks:
 #    - name: Display all variables/facts known for a host

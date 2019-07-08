@@ -1,0 +1,39 @@
+---
+
+#- name: Ensure composer is installed
+#  package:
+#    name: composer
+#    state: present
+
+
+- name: Ensure Magento PHP dependencies are installed
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+     - composer
+     - libmcrypt-dev
+     - php-gd
+     - php-dom
+     - php-curl
+     - php-intl
+     - php-mbstring
+     - php-zip
+     - php-bcmath
+     - php-soap
+     - php-mysql
+     - php-xdebug
+
+
+
+- name: Ensure mcrypt is installed
+  command: '/usr/bin/php -me'
+  register: mcrypt_ext_installed
+  
+- name: debug the variable
+  debug: 
+    var: mcrypt_ext_installed
+    
+- name: Install the mcrypt extension
+  shell: 'printf "yes\n" | pecl install mcrypt channel://pecl.php.net/mcrypt-{{mcrypt_vers}}'
+  when:  mcrypt not in mcrypt_ext_installed.stdout
