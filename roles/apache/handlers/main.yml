@@ -11,7 +11,7 @@
     state: restarted
 
 - name: reload apache
-  command: systemctl reload apache2
+  command: service apache2 graceful
 
 - name: activate apache configuration
   file: 
