@@ -5,14 +5,6 @@
     name: apache2
     state: present
     
-#- name: Ensure mod_deflate settings are active
-#  template:
-#    src: gzip.conf.j2
-#    dest: /etc/apache2/conf-available/gzip.conf
-#    mode:  0644
-#    owner: root
-#    group: root
-
 # FIXME: every time we add configs to the templates dir, we will have to add it to 
 # the "loop" list here. Is there a way to loop based on everything in the templates dir?
 
