@@ -4,7 +4,7 @@
 # Begin Linux system user vars
 
 magento_os_user: "magento"
-magento_os_group: "php-fpm"
+magento_os_group: "www-data"
 
 # Begin database vars
 

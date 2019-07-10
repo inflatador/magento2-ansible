@@ -12,8 +12,8 @@
   file:
     state: directory
     path: "/var/www/vhosts/{{domain}}"
-    owner: root
-    group: root
+    owner: "{{ magento_os_user }}"
+    group: "{{ magento_os_group }}"
     mode: 0755
   
 - name: Ensure apache configs are active
@@ -53,6 +53,7 @@
     state: present
   loop:
     - proxy_fcgi
+    - rewrite
     - ssl
   notify:
     - restart apache

@@ -3,6 +3,7 @@
 ServerName {{domain}}
 <Directory /var/www/vhosts/{{domain}}>
 Require all granted
+AllowOverride all
 </Directory>
 DocumentRoot /var/www/vhosts/{{domain}}
 <FilesMatch ".+\.ph(ar|p|tml)$">

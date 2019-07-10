@@ -45,7 +45,7 @@
     check_implicit_admin: yes
     name: magento_db
     password: "{{ magento_db_password }}"
-    priv: "magento_db.*:DROP,LOCK TABLES,SELECT,INSERT,INDEX,ALTER,CREATE TEMPORARY TABLES,UPDATE,CREATE,DELETE"
+    priv: "magento_db.*:SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,INDEX,ALTER,CREATE TEMPORARY TABLES,LOCK TABLES,EXECUTE,CREATE VIEW,SHOW VIEW,CREATE ROUTINE,ALTER ROUTINE,TRIGGER"
     host: localhost
     update_password: on_create
 
