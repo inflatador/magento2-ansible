@@ -5,16 +5,6 @@
     name: apache2
     state: started
     
-- name: restart apache
-  service:
-    name: apache2
-    state: restarted
-
-- name: reload apache
-  service:
-    name: apache2
-    state: reloaded
-
 - name: activate apache configuration
   file: 
     src: "{{ item.dest }}"
@@ -46,5 +36,15 @@
 #  loop: "{{ sites_created.results|flatten(levels=1) }}"
 #  when: item.changed
   
+- name: restart apache
+  service:
+    name: apache2
+    state: restarted
+
+- name: reload apache
+  service:
+    name: apache2
+    state: reloaded
+
 
  
