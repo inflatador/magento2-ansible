@@ -23,7 +23,8 @@
      - php-soap
      - php-mysql
      - php-xdebug
-
+   notify: 
+     - reload apache
 
 
 - name: Ensure mcrypt is installed
