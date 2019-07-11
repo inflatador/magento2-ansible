@@ -47,18 +47,27 @@
   shell: 'phpenmod mcrypt'
   when:  mcrypt_pkg_name not in mcrypt_ext_installed.stdout
 
-- name: Check if Magento files are present
-  command: 'stat /var/www/vhosts/{{domain}}'
+- name: Check if composer files are present
+  command: 'stat /var/www/vhosts/{{domain}}/pub'
   register: magento_present
   ignore_errors: yes
 
 - name: Set repo.magento.com composer keys
-  shell: 'composer config --global http-basic.repo.magento.com {{repo_keys}}'
-  become: true
-  become_user: "{{ magento_os_user }}"
+  shell: 'composer config --global http-basic.repo.magento.com b2f5cba61c010a8eb9e563dc7f031db2 842ab5320d751c878cdc488f3e5ddf6a'
   environment:
-    HOME: "/var/www/vhosts/{{domain}}"
+    HOME: "/root"
+  when: magento_present is failed
+
+- name: download magento with composer
+  shell: 'composer create-project --repository=https://repo.magento.com/ magento/project-community-edition /var/www/vhosts/{{domain}}'
+  environment:
+    HOME: "/root"
+  when: magento_present is failed
+
+- name: Ensure web directories have the correct permissions
+  file:
+    state: directory
+    recurse: yes
+    owner: "{{ magento_os_user }}"
+    group: "{{ magento_os_group }}"
     
-- name: install Magento2 CE using composer
-  shell: 'composer create-project --repository=https://repo.magento.com/ magento/project-community-edition /var/www/vhosts{{domain}}'
-  when: magento_present is failed 

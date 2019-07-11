@@ -4,4 +4,8 @@ mcrypt_vers: 1.0.2
 
 mcrypt_pkg_name: "mcrypt"
 
+magento_repo_user: "b2f5cba61c010a8eb9e563dc7f031db2"
+
+magento_repo_pass: "842ab5320d751c878cdc488f3e5ddf6a"
+
 repo_keys: "b2f5cba61c010a8eb9e563dc7f031db2 842ab5320d751c878cdc488f3e5ddf6a"
