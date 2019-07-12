@@ -64,10 +64,22 @@
     HOME: "/root"
   when: magento_present is failed
 
-- name: Ensure web directories have the correct permissions
+- name: Ensure web directories have correct owner, group, and mode
   file:
     state: directory
     recurse: yes
     owner: "{{ magento_os_user }}"
     group: "{{ magento_os_group }}"
-    
+    path: '/var/www/vhosts/{{domain}}'
+    mode: 'u=rwX,g=+w+X,o=rX'
+
+
+- name: Configure Directory Level Permissions for media
+  command: "{{ find_dirs_cmd }}"
+  args:
+    chdir: '/var/www/vhosts/{{domain}}'
+  register: file_perm_change
+  changed_when: file_perm_change.stdout
+
+
+
