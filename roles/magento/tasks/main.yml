@@ -20,7 +20,6 @@
   notify: 
     - reload apache
 
-
 - name: Ensure mcrypt is installed
   command: '/usr/bin/php -me'
   register: mcrypt_ext_installed
@@ -71,8 +70,7 @@
     owner: "{{ magento_os_user }}"
     group: "{{ magento_os_group }}"
     path: '/var/www/vhosts/{{domain}}'
-    mode: 'u=rwX,g=+w+X,o=rX'
-
+    mode: 'u=rwX,g=rwX,o=rX'
 
 - name: Configure Directory Level Permissions for media
   command: "{{ find_dirs_cmd }}"
@@ -81,5 +79,15 @@
   register: file_perm_change
   changed_when: file_perm_change.stdout
 
+- name: Assign random password for Magento admin user
+  set_fact:
+    magento_admin_password: "{{ lookup('password', '~/magento_admin_creds chars=ascii_letters,digits length=36')}}"
 
-
+- name: Assign random path for Magento admin URL
+  set_fact:
+    magento_admin_url: "{{ lookup('password', '~/magento_admin_url chars=ascii_letters,digits length=36')}}"
+    
+- name: install Magento
+  command: 'php -dmemory_limit=1G bin/magento setup:install --base-url="http://{{domain}}" --base-url-secure="https://{{domain}}"  --backend-frontname="{{ magento_admin_url }}" --db-host=localhost --db-name=magento_db --db-user=magento_db --db-password="{{ magento_db_password }}" --admin-firstname=admin --admin-lastname=admin --admin-email=admin@admin.com --admin-user=admin --admin-password={{ magento_admin_password }} --language=en_US --currency=USD --timezone=UTC --sales-order-increment-prefix="ORD$" --session-save=redis --session-save-redis-host=/var/run/redis/redis.sock --skip-db-validation --use-rewrites=1'
+  args:
+    chdir: '/var/www/vhosts/{{domain}}'

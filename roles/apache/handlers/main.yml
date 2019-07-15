@@ -24,7 +24,6 @@
   loop: "{{ mods_created.results|flatten(levels=1) }}"
   when: item.changed
 
-
 - name: activate apache site
   file: 
     src: "{{ item.dest }}"
@@ -32,8 +31,8 @@
     owner: root
     group: root
     state: link
-  with_items: "{{ sites_created.results }}"
-#  loop: "{{ sites_created.results|flatten(levels=1) }}"
+ # with_items: "{{ sites_created.results }}"
+  loop: "{{ sites_created.results|flatten(levels=1) }}"
 #  when: item.changed
   
 - name: restart apache
