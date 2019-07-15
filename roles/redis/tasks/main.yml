@@ -17,7 +17,11 @@
     owner: redis
     group: root
     mode: 0644
-  notify: Restart Redis
+
+- name: Restart redis
+  service:
+    name: redis
+    state: restarted
 
 - name: Tune system for Redis
   include: system_tuning.yml

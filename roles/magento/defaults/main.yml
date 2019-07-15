@@ -11,3 +11,5 @@ magento_repo_pass: "842ab5320d751c878cdc488f3e5ddf6a"
 repo_keys: "b2f5cba61c010a8eb9e563dc7f031db2 842ab5320d751c878cdc488f3e5ddf6a"
 
 find_dirs_cmd: 'find var vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} ";"'
+
+redis_socket: "/var/run/redis/redis.sock"
