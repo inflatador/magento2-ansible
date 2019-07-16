@@ -62,6 +62,19 @@
     HOME: "/root"
   when: magento_present is failed
 
+- name: Assign random password for Magento admin user
+  set_fact:
+    magento_admin_password: "{{ lookup('password', '~/magento_admin_creds chars=ascii_letters,digits length=36')}}"
+
+- name: Assign random path for Magento admin URL
+  set_fact:
+    magento_admin_url: "{{ lookup('password', '~/magento_admin_url chars=ascii_letters,digits length=36')}}"
+    
+- name: install Magento
+  command: 'php -dmemory_limit=1G bin/magento setup:install --base-url="http://{{domain}}" --base-url-secure="https://{{domain}}"  --backend-frontname="{{ magento_admin_url }}" --db-host=localhost --db-name=magento_db --db-user=magento_db --db-password="{{ magento_db_password }}" --admin-firstname=admin --admin-lastname=admin --admin-email=admin@admin.com --admin-user=admin --admin-password="{{ magento_admin_password }}" --language=en_US --currency=USD --timezone=UTC --sales-order-increment-prefix="ORD$" --cache-backend=redis --cache-backend-redis-server="{{ redis_socket }}" --cache-backend-redis-db=0 --page-cache=redis --page-cache-redis-server="{{ redis_socket }}"  --page-cache-redis-db=1 --session-save=redis --session-save-redis-host="{{redis_socket}}" --session-save-redis-db=2 --skip-db-validation --use-rewrites=1'
+  args:
+    chdir: '/var/www/vhosts/{{domain}}'
+
 - name: Ensure web directories have correct owner, group, and mode
   file:
     state: directory
@@ -77,16 +90,3 @@
     chdir: '/var/www/vhosts/{{domain}}'
   register: file_perm_change
   changed_when: file_perm_change.stdout
-
-- name: Assign random password for Magento admin user
-  set_fact:
-    magento_admin_password: "{{ lookup('password', '~/magento_admin_creds chars=ascii_letters,digits length=36')}}"
-
-- name: Assign random path for Magento admin URL
-  set_fact:
-    magento_admin_url: "{{ lookup('password', '~/magento_admin_url chars=ascii_letters,digits length=36')}}"
-    
-- name: install Magento
-  command: 'php -dmemory_limit=1G bin/magento setup:install --base-url="http://{{domain}}" --base-url-secure="https://{{domain}}"  --backend-frontname="{{ magento_admin_url }}" --db-host=localhost --db-name=magento_db --db-user=magento_db --db-password="{{ magento_db_password }}" --admin-firstname=admin --admin-lastname=admin --admin-email=admin@admin.com --admin-user=admin --admin-password="{{ magento_admin_password }}" --language=en_US --currency=USD --timezone=UTC --sales-order-increment-prefix="ORD$" --cache-backend=redis --cache-backend-redis-server="{{ redis_socket }}" --cache-backend-redis-db=0 --page-cache=redis --page-cache-redis-server="{{ redis_socket }}"  --page-cache-redis-db=1 --session-save=redis --session-save-redis-host="{{redis_socket}}" --session-save-redis-db=2 --skip-db-validation --use-rewrites=1'
-  args:
-    chdir: '/var/www/vhosts/{{domain}}'
