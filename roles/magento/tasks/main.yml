@@ -16,7 +16,6 @@
      - php-bcmath
      - php-soap
      - php-mysql
-     - php-xdebug
   notify: 
     - reload apache
 
