@@ -37,7 +37,7 @@
 
 - name: Assign random password for Magento database user
   set_fact:
-    magento_db_password: "{{ lookup('password', '~/magento_db_creds chars=ascii_letters,digits length=36')}}"
+    magento_db_password: "{{ lookup('password', '~/magento_db_password chars=ascii_letters,digits length=36')}}"
 
 - name: Ensure Magento2 database user is present with proper permissions
   mysql_user:
