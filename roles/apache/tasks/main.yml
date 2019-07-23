@@ -15,6 +15,23 @@
     owner: "{{ magento_os_user }}"
     group: "{{ magento_os_group }}"
     mode: 0755
+ 
+- name: Generate an OpenSSL private key
+  openssl_privatekey:
+    path: "/etc/ssl/private/{{ domain }}.key"
+
+- name: Generate an OpenSSL CSR.
+  openssl_csr:
+    path: "/etc/ssl/certs/{{ domain }}.csr"
+    privatekey_path: "/etc/ssl/private/{{ domain }}.key"
+    common_name: "{{ domain }}"
+
+- name: Generate self-signed SSL certificate
+  openssl_certificate:
+    path: "/etc/ssl/certs/{{ domain }}.crt"
+    privatekey_path: "/etc/ssl/private/{{ domain }}.key"
+    provider: selfsigned
+    csr_path: "/etc/ssl/certs/{{ domain }}.csr"
   
 - name: Ensure apache configs are active
   template:
@@ -55,8 +72,10 @@
     - proxy_fcgi
     - rewrite
     - ssl
+    - headers
   notify:
     - restart apache
+
   
 - name: Ensure apache sites are active
   template:
@@ -68,13 +87,8 @@
     backup: true
   register: sites_created
   loop:
-    - vhost
+#    - vhost
+    - frontend
   notify: 
    - activate apache site
    - reload apache
-
-
-#- name: Debug the variable
-#  debug:
-#    var: sites_created
-  
