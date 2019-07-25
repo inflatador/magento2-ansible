@@ -69,10 +69,12 @@
     name: "{{ item }}"
     state: present
   loop:
+    - headers
     - proxy_fcgi
+    - proxy_http
     - rewrite
     - ssl
-    - headers
+
   notify:
     - restart apache
 
@@ -89,6 +91,7 @@
   loop:
 #    - vhost
     - frontend
+    - backend
   notify: 
    - activate apache site
    - reload apache

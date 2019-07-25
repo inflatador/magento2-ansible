@@ -15,6 +15,7 @@
     # ProxyPass will default add `X-Forwarded-For`, `X-Forwarded-Host` and `X-Forwarded-Server`
     ProxyPreserveHost On
     ProxyPass / http://127.0.0.1:6081/
+    ProxyPassReverse / http://127.0.0.1:6081/
 </VirtualHost>
 
 
@@ -36,4 +37,5 @@
     RequestHeader set X-Forwarded-Proto https
     RequestHeader set X-Forwarded-Port 443
     ProxyPass / http://127.0.0.1:6081/
+    ProxyPassReverse / http://127.0.0.1:6081/
 </VirtualHost>

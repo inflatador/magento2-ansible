@@ -11,4 +11,11 @@
     state: started
     enabled: yes
 
-
+- name: Write Varnish environment configuration
+  template:
+    src: params.j2
+    dest: /etc/varnish/varnish.params
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart Varnish
