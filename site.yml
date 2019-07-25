@@ -13,6 +13,7 @@
     - php-fpm
     - apache
     - magento
+    - varnish
 
 #  tasks:
 #    - name: Display all variables/facts known for a host

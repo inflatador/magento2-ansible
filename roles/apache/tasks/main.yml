@@ -77,9 +77,8 @@
 
   notify:
     - restart apache
-
   
-- name: Ensure apache sites are active
+- name: Ensure apache config is available
   template:
     src: "{{ item }}.conf.j2"
     dest: "/etc/apache2/sites-available/{{ item }}.conf"
@@ -92,6 +91,15 @@
 #    - vhost
     - frontend
     - backend
+
+- name: Ensure apache config is active
+  file: 
+    src: "{{ item.dest }}"
+    dest: "/etc/apache2/sites-enabled/{{ item.item }}.conf"
+    owner: root
+    group: root
+    state: link
+  with_items: "{{ sites_created.results }}"
   notify: 
-   - activate apache site
-   - reload apache
+    - reload apache
+
