@@ -4,7 +4,7 @@
 
 <VirtualHost *:80>
     ServerName {{ domain }}
-    ServerAlias www.{{ domain }}
+    ServerAlias www.{{ domain }} {{ my_pub_ip4 }} {{ my_pub_ip6 }}
     ErrorLog {{ apache_log_path }}/{{ domain}}-frontend-error.log
     CustomLog {{ apache_log_path }}/{{ domain }}-frontend-access.log combined
 
@@ -20,8 +20,8 @@
 
 
 <VirtualHost *:443>
-    ServerName {{ domain }}
-    ServerAlias www.{{ domain }}
+    ServerName {{ domain }} 
+    ServerAlias www.{{ domain }} {{ my_pub_ip4 }} {{ my_pub_ip6 }}
     ErrorLog {{ apache_log_path }}/{{ domain }}-frontend-error.log
     CustomLog {{ apache_log_path }}/{{ domain }}-frontend-access.log combined
 

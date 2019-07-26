@@ -13,3 +13,5 @@ magento_db_pass: ""
 magento_db_name: "{{ magento_os_user }}_db"
 magento_db_host: "localhost"
 
+my_pub_ip4: "{{ ansible_default_ipv4.address }}"
+my_pub_ip6: "{{ ansible_default_ipv6.address }}"

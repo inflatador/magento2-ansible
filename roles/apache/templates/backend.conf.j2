@@ -9,9 +9,9 @@ Listen 8080
     CustomLog {{ apache_log_path }}/{{ domain }}-backend-access.log combined
     SetEnvIf X-Forwarded-Proto https HTTPS=on
 
-    DocumentRoot "/var/www/vhosts/{{ domain }}"
+    DocumentRoot /var/www/vhosts/{{ domain }}
 
-    <Directory "/var/www/vhosts/{{ domain }}">
+    <Directory /var/www/vhosts/{{ domain }}>
         AllowOverride All
         Options -Indexes +FollowSymLinks
         Require all granted

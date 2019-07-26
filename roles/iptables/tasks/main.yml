@@ -16,4 +16,4 @@
   loop: 
    - rules.v4
    - rules.v6
-  notify: Activate iptables rules
+  notify:  Activate iptables and ip6tables firewall rules
