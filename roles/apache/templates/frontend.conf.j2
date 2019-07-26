@@ -3,10 +3,10 @@
 # VHost for serving site traffic
 
 <VirtualHost *:80>
-    ServerName {{ domain }}
-    ServerAlias www.{{ domain }} {{ my_pub_ip4 }} {{ my_pub_ip6 }}
-    ErrorLog {{ apache_log_path }}/{{ domain}}-frontend-error.log
-    CustomLog {{ apache_log_path }}/{{ domain }}-frontend-access.log combined
+    ServerName {{ my_pub_ip4 }}
+    ServerAlias {{ my_pub_ip6 }}
+    ErrorLog {{ apache_log_path }}/magento-frontend-error.log
+    CustomLog {{ apache_log_path }}/magento-frontend-access.log combined
 
     SetEnvIf X-Forwarded-Proto https HTTPS=on
 
@@ -20,14 +20,14 @@
 
 
 <VirtualHost *:443>
-    ServerName {{ domain }} 
-    ServerAlias www.{{ domain }} {{ my_pub_ip4 }} {{ my_pub_ip6 }}
-    ErrorLog {{ apache_log_path }}/{{ domain }}-frontend-error.log
-    CustomLog {{ apache_log_path }}/{{ domain }}-frontend-access.log combined
+    ServerName {{ my_pub_ip4 }}
+    ServerAlias {{ my_pub_ip6 }}
+    ErrorLog {{ apache_log_path }}/magento-frontend-error.log
+    CustomLog {{ apache_log_path }}/magento-frontend-access.log combined
 
     SSLEngine On
-    SSLCertificateFile {{ ssl_cert_path }}/{{ domain }}.crt
-    SSLCertificateKeyFile {{ ssl_key_path }}/{{domain}}.key
+    SSLCertificateFile {{ ssl_cert_path }}/magento.crt
+    SSLCertificateKeyFile {{ ssl_key_path }}/magento.key
 
     #comment
 

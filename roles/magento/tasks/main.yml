@@ -46,7 +46,7 @@
   when:  mcrypt_pkg_name not in mcrypt_ext_installed.stdout
 
 - name: Check if composer files are present
-  command: 'stat /var/www/vhosts/{{domain}}/pub'
+  command: 'stat /var/www/vhosts/magento/pub'
   register: magento_present
   ignore_errors: yes
 
@@ -57,7 +57,7 @@
   when: magento_present is failed
 
 - name: download magento with composer
-  shell: 'composer create-project --repository=https://repo.magento.com/ magento/project-community-edition /var/www/vhosts/{{domain}}'
+  shell: 'composer create-project --repository=https://repo.magento.com/ magento/project-community-edition /var/www/vhosts/magento'
   environment:
     HOME: "/root"
   when: magento_present is failed
@@ -71,9 +71,9 @@
     magento_admin_url: "{{ lookup('password', '~/magento_admin_url chars=ascii_letters,digits length=36')}}"
     
 - name: install Magento
-  command: 'php -dmemory_limit=1G bin/magento setup:install --base-url="http://{{domain}}" --base-url-secure="https://{{domain}}"  --backend-frontname="{{ magento_admin_url }}" --db-host=localhost --db-name=magento_db --db-user=magento_db --db-password="{{ magento_db_password }}" --admin-firstname=admin --admin-lastname=admin --admin-email=admin@admin.com --admin-user=admin --admin-password="{{ magento_admin_password }}" --language=en_US --currency=USD --timezone=UTC --sales-order-increment-prefix="ORD$" --cache-backend=redis --cache-backend-redis-server="{{ redis_socket }}" --cache-backend-redis-db=0 --page-cache=redis --page-cache-redis-server="{{ redis_socket }}"  --page-cache-redis-db=1 --session-save=redis --session-save-redis-host="{{redis_socket}}" --session-save-redis-db=2 --skip-db-validation --use-rewrites=1'
+  command: 'php -dmemory_limit=1G bin/magento setup:install --base-url="http://{{ my_pub_ip4 }}" --base-url-secure="https://{{ my_pub_ip4 }}"  --backend-frontname="{{ magento_admin_url }}" --db-host=localhost --db-name=magento_db --db-user=magento_db --db-password="{{ magento_db_password }}" --admin-firstname=admin --admin-lastname=admin --admin-email=admin@admin.com --admin-user=admin --admin-password="{{ magento_admin_password }}" --language=en_US --currency=USD --timezone=UTC --sales-order-increment-prefix="ORD$" --cache-backend=redis --cache-backend-redis-server="{{ redis_socket }}" --cache-backend-redis-db=0 --page-cache=redis --page-cache-redis-server="{{ redis_socket }}"  --page-cache-redis-db=1 --session-save=redis --session-save-redis-host="{{redis_socket}}" --session-save-redis-db=2 --skip-db-validation --use-rewrites=1'
   args:
-    chdir: '/var/www/vhosts/{{domain}}'
+    chdir: '/var/www/vhosts/magento'
 
 - name: Ensure web directories have correct owner, group, and mode
   file:
@@ -81,12 +81,12 @@
     recurse: yes
     owner: "{{ magento_os_user }}"
     group: "{{ magento_os_group }}"
-    path: '/var/www/vhosts/{{domain}}'
+    path: '/var/www/vhosts/magento'
     mode: 'u=rwX,g=rwX,o=rX'
 
 - name: Configure Directory Level Permissions for media
   command: "{{ find_dirs_cmd }}"
   args:
-    chdir: '/var/www/vhosts/{{domain}}'
+    chdir: '/var/www/vhosts/magento'
   register: file_perm_change
   changed_when: file_perm_change.stdout
