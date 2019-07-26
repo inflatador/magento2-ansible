@@ -11,27 +11,27 @@
 - name: build directory structure for vhost
   file:
     state: directory
-    path: "/var/www/vhosts/{{domain}}"
+    path: "/var/www/vhosts/magento"
     owner: "{{ magento_os_user }}"
     group: "{{ magento_os_group }}"
     mode: 0755
  
 - name: Generate an OpenSSL private key
   openssl_privatekey:
-    path: "/etc/ssl/private/{{ domain }}.key"
+    path: "/etc/ssl/private/magento.key"
 
 - name: Generate an OpenSSL CSR.
   openssl_csr:
-    path: "/etc/ssl/certs/{{ domain }}.csr"
-    privatekey_path: "/etc/ssl/private/{{ domain }}.key"
-    common_name: "{{ domain }}"
+    path: "/etc/ssl/certs/magento.csr"
+    privatekey_path: "/etc/ssl/private/magento.key"
+    common_name: "magento.example.com"
 
 - name: Generate self-signed SSL certificate
   openssl_certificate:
-    path: "/etc/ssl/certs/{{ domain }}.crt"
-    privatekey_path: "/etc/ssl/private/{{ domain }}.key"
+    path: "/etc/ssl/certs/magento.crt"
+    privatekey_path: "/etc/ssl/private/magento.key"
     provider: selfsigned
-    csr_path: "/etc/ssl/certs/{{ domain }}.csr"
+    csr_path: "/etc/ssl/certs/magento.csr"
   
 - name: Ensure apache configs are active
   template:
