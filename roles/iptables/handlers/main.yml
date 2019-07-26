@@ -1,0 +1,7 @@
+---
+
+- name: Activate iptables and ip6tables firewall rules
+  command: "{{ item[0] }} /etc/iptables/{{ item[1] }}"
+  with_together:
+    - [ 'iptables-restore', 'rules.v4' ]
+    - [ 'ip6tables-restore', 'rules.v6' ]
