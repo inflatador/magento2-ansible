@@ -64,7 +64,7 @@
 
 - name: Assign random password for Magento admin user
   set_fact:
-    magento_admin_password: "{{ lookup('password', '~/magento_admin_password chars=ascii_letters,digits length=24')}}"
+    magento_admin_password: "{{ lookup('password', '~/magento_admin_password length=24')}}"
 
 - name: Assign random path for Magento admin URL
   set_fact:
