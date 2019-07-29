@@ -47,7 +47,7 @@
     - "php{{php_vers}}-fpm"
   notify: 
    - activate apache configuration
-   - reload apache
+   - restart apache
 
 - name: Ensure apache module configs are active
   template:
