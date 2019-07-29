@@ -91,6 +91,8 @@
 #    - vhost
     - frontend
     - backend
+  notify:
+    - restart apache
 
 - name: Ensure apache config is active
   file: 

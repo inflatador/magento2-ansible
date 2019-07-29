@@ -23,7 +23,12 @@
     state: link
   loop: "{{ mods_created.results|flatten(levels=1) }}"
   when: item.changed
-  
+
+- name: reload apache
+  service:
+    name: apache2
+    state: reloaded
+
 - name: restart apache
   service:
     name: apache2
