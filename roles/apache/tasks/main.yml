@@ -101,7 +101,7 @@
     state: link
   with_items: "{{ sites_created.results }}"
   notify: 
-    - reload apache
+    - restart apache
   
 
 

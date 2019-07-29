@@ -79,10 +79,12 @@
   command: 'php -dmemory_limit=1G bin/magento cron:install'
   args:
     chdir: '/var/www/vhosts/magento'
-  ingore_errors: yes
+  ignore_errors: yes
 
 - name: compile static Magento
-  command: 'php -d set_time_limit=7200 -d memory_limit=2048M /bin/magento setup:di:compile'
+  command: 'php -d set_time_limit=7200 -d memory_limit=2048M bin/magento setup:di:compile'
+  args:
+    chdir: '/var/www/vhosts/magento'
 
 - name: Ensure web directories have correct owner, group, and mode
   file:
