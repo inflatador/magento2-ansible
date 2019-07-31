@@ -102,3 +102,15 @@
   register: file_perm_change
   changed_when: file_perm_change.stdout
 
+- name: Ensure sftp user has access to Magento dirs
+  acl:
+    path: '/var/www/vhosts/magento'
+    entity: sftp
+    etype: user
+    permissions: rwx
+    default: "{{ item }}"
+    state: present
+    recursive: yes
+  loop:
+    - yes
+    - no

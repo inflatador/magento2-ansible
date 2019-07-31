@@ -34,7 +34,7 @@
   command: mkswap {{ swap_file }}
   when: not swap_file_check.stat.exists
 
-- name: add to fstab
+- name: add swap to fstab
   lineinfile:
     dest: /etc/fstab
     regexp: "{{ swap_file }}"
@@ -42,3 +42,22 @@
 
 - name: turn on swap
   command: swapon -a
+
+- name: Ensure sftp user exists
+  user:
+    name: sftp
+    password: "{{ lookup('password', '~/sftp_user_password chars=ascii_letters,digits,hexdigits,punctuation')  | password_hash('sha512')}}"
+    shell: /usr/sbin/nologin
+    update_password: on_create
+
+- name: Configure ssh daemon for sftp use
+  template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    mode: 0644
+    owner: root
+    group: root
+  notify: restart ssh daemon
+
+
+    
