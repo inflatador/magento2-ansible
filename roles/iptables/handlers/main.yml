@@ -1,7 +1,6 @@
 ---
 
 - name: Activate iptables and ip6tables firewall rules
-  command: "{{ item[0] }} /etc/iptables/{{ item[1] }}"
-  with_together:
-    - [ 'iptables-restore', 'ip6tables-restore' ]
-    - [ 'rules.v4', 'rules.v6' ]
+  systemd:
+    name: netfilter-persistent
+    state: restarted
