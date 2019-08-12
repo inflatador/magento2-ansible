@@ -43,6 +43,15 @@
 - name: turn on swap
   command: swapon -a
 
+- name: Create sftp user home dir
+  file:
+    state: directory
+    path: "/var/www/vhosts/magento"
+    mode: 0751
+    owner: "{{ magento_os_user}}"
+    group: "{{ magento_os_group }}"
+    
+
 - name: Ensure sftp user exists
   user:
     name: sftp
