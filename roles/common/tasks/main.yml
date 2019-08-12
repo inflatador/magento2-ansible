@@ -49,7 +49,7 @@
     password: "{{ lookup('password', '~/sftp_pass chars=ascii_letters,digits,hexdigits,punctuation')  | password_hash('sha512')}}"
     shell: /usr/sbin/nologin
     update_password: on_create
-#    home: "/var/www/vhosts/magento"
+    home: "/var/www/vhosts/magento"
 
 - name: Configure ssh daemon for sftp use
   template:
