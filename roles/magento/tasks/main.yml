@@ -15,7 +15,6 @@
      - php-bcmath
      - php-soap
      - php-mysql
-     - php-libsodium
   notify: 
     - reload apache
 
